@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+require 'digest/sha1'
+require 'open-uri'
+require 'nokogiri'
+
+unless ARGV.length == 1
+  puts "Usage: $ leakedin MYPASSWORD"
+  exit
+else
+  password = Digest::SHA1.hexdigest(ARGV[0])
+  url = "http://leakedin.org/?check=#{password}"
+  doc = Nokogiri::HTML(open(url))
+  message = doc.xpath("/html/body/ul/li").text
+  puts message
+end
